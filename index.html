@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudySpace</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>StudySpace</h1>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/bookings">Bookings</a>
+        <a href="/add_space">Add Space</a>
+    </nav>
+</header>
+
+<main>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="message {{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+
+    <section class="hero">
+        <h2>Find Your Perfect Study Space</h2>
+        <p>Search and reserve campus rooms easily.</p>
+    </section>
+
+    <section class="filter">
+
+        <h2>Search Campus Spaces</h2>
+
+        <form method="GET">
+
+            <select name="building">
+
+                <option value="">All Buildings</option>
+
+                {% for b in buildings %}
+
+                    <option value="{{ b.id }}">
+                        {{ b.name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+            <select name="type">
+
+                <option value="">All Room Types</option>
+
+                {% for t in types %}
+
+                    <option value="{{ t.room_type }}">
+                        {{ t.room_type }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+            <button type="submit">Search</button>
+
+        </form>
+
+    </section>
+
+    <h2>Available Campus Spaces</h2>
+
+    <div class="space-container">
+
+        {% for space in spaces %}
+
+        <div class="space-card">
+
+            <h3>{{ space.name }}</h3>
+
+            <p><b>Building:</b> {{ space.building_name }}</p>
+
+            <p><b>Type:</b> {{ space.room_type }}</p>
+
+            <p><b>Capacity:</b> {{ space.capacity }}</p>
+
+            <p><b>Facilities:</b> {{ space.facilities }}</p>
+
+            <form method="POST" action="/book/{{ space.id }}">
+
+                <input
+                    type="text"
+                    name="student_name"
+                    placeholder="Your name"
+                    maxlength="80"
+                    required
+                >
+
+                <input
+                    type="date"
+                    name="booking_date"
+                    required
+                >
+
+                <input
+                    type="time"
+                    name="start_time"
+                    required
+                >
+
+                <input
+                    type="time"
+                    name="end_time"
+                    required
+                >
+
+                <input
+                    type="text"
+                    name="purpose"
+                    placeholder="Booking purpose"
+                    maxlength="120"
+                    required
+                >
+
+                <button type="submit">Book Now</button>
+
+            </form>
+
+        </div>
+
+        {% else %}
+
+            <p>No spaces found.</p>
+
+        {% endfor %}
+
+    </div>
+
+</main>
+
+<footer>
+    StudySpace | Smart Campus Space Booking System
+</footer>
+
+</body>
+</html>

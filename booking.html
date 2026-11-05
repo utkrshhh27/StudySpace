@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>StudySpace Bookings</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<header>
+
+    <h1>StudySpace</h1>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/bookings">Bookings</a>
+        <a href="/add_space">Add Space</a>
+    </nav>
+
+</header>
+
+<main>
+
+    <h2>Booking Records</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="message {{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+
+    <table>
+
+        <tr>
+            <th>Room</th>
+            <th>Building</th>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Purpose</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+
+        {% for b in bookings %}
+
+        <tr>
+
+            <td>{{ b.space_name }}</td>
+
+            <td>{{ b.building_name }}</td>
+
+            <td>{{ b.student_name }}</td>
+
+            <td>{{ b.booking_date }}</td>
+
+            <td>
+                {{ b.start_time }} - {{ b.end_time }}
+            </td>
+
+            <td>{{ b.purpose }}</td>
+
+            <td>{{ b.status }}</td>
+
+            <td>
+
+                {% if b.status == "Confirmed" %}
+
+                <form method="POST" action="/cancel/{{ b.id }}">
+
+                    <button type="submit" class="cancel">
+                        Cancel
+                    </button>
+
+                </form>
+
+                {% endif %}
+
+            </td>
+
+        </tr>
+
+        {% else %}
+
+        <tr>
+            <td colspan="8">No bookings available.</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</main>
+
+<footer>
+    StudySpace
+</footer>
+
+</body>
+</html>

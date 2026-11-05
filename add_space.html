@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Space | StudySpace</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<header>
+
+    <h1>StudySpace</h1>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/bookings">Bookings</a>
+        <a href="/add_space">Add Space</a>
+    </nav>
+
+</header>
+
+<main>
+
+    <h2>Add New Campus Space</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="message {{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+
+    <div class="form-box">
+
+        <form method="POST">
+
+            <label>Room Name</label>
+
+            <input
+                type="text"
+                name="name"
+                required
+            >
+
+            <label>Building</label>
+
+            <select name="building_id" required>
+
+                {% for b in buildings %}
+
+                    <option value="{{ b.id }}">
+                        {{ b.name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+            <label>Room Type</label>
+
+            <select name="room_type" required>
+
+                <option>Study Room</option>
+                <option>Discussion Room</option>
+                <option>Project Room</option>
+                <option>Seminar Hall</option>
+                <option>Classroom</option>
+                <option>Laboratory</option>
+
+            </select>
+
+            <label>Capacity</label>
+
+            <input
+                type="number"
+                name="capacity"
+                min="1"
+                required
+            >
+
+            <label>Facilities</label>
+
+            <input
+                type="text"
+                name="facilities"
+                placeholder="Wi-Fi, Projector, etc."
+            >
+
+            <button type="submit">
+                Add Space
+            </button>
+
+        </form>
+
+    </div>
+
+</main>
+
+<footer>
+    StudySpace
+</footer>
+
+</body>
+</html>
